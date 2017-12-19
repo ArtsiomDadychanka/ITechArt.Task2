@@ -1,13 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>ITechArt.Task2</title>
+    <link rel="stylesheet" href="css/main.css">
+    <!-- Tests -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mocha/4.0.1/mocha.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mocha/4.0.1/mocha.min.js"></script>
+    <script>
+        mocha.setup('bdd');
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chai/4.1.2/chai.min.js"></script>
+    <script>
+        var assert = chai.assert;
+    </script>
 </head>
+
 <body>
-    
+    <div class="task arrayProcessingTool">
+        <div class="subtask">
+            <div class="subtask-header">
+                <h2>Sub Sum</h2>
+            </div>
+            <div class="subtask-content">
+                <div class="input">
+                    <span>Array:</span>
+                    <span class="inputValues">31, -41, 59, 26, -53, 58, 97, -93, -23, 84</span>
+                </div>
+                <div class="output">
+                    <span>Result:</span>
+                    <span class="result"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="js/arrayProcessingTool.js"></script>
+    <script src="js/stringCalculator.js"></script>
+    <script src="js/binaryConverter.js"></script>
     <script src="js/main.js"></script>
+    <!-- Tests -->
+    <div id="mocha"></div>
+    <script src="js/test/arrayProcessingToolTest.js"></script>
+    <script src="js/test/stringCalculatorTest.js"></script>
+    <script src="js/test/binaryConverterTest.js"></script>
+    <script>
+        mocha.run();
+    </script>
 </body>
+
 </html>
