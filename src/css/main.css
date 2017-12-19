@@ -1,0 +1,13 @@
+.task {
+    display: flex;
+    padding: 20px;
+}
+
+.subtask {
+    display: flex;
+    flex-flow: column wrap;
+}
+
+.subtask-content .input {
+    padding: 20px 0;
+}
