@@ -15,6 +15,7 @@ describe("Text formatter", function() {
   var expectedFormattedShortStringCharWrap8 = "hello bo\nys"
   var expectedFormattedMiddleStringCharWrap8 = "hello bo\nys, wazz\nup my ni\ngga, yo";
   var expectedFormattedMiddleStringWordWrap8 = "hello \nboys, \nwazzup \nmy \nnigga, \nyo";
+  var expectedFormattedMiddleStringWordWrap6 = "hello \nboys, \nwazzup\n my \nnigga,\n yo";
 
   describe("Invalid input", function() {
     var emptyString = '';
@@ -57,13 +58,21 @@ describe("Text formatter", function() {
   });
 
   describe('Word wrapping', function() {
+    // it("Input: " + '\"' + middleString + '\";' +
+    //   ' Max length: ' + maxLength + ';' +
+    //   ' Expected: ' + "hello \\nboys, \\nwazzup \\nmy \\nnigga, \\nyo" + ';',
+    //   function() {
+    //     assert.equal(textFormatter.handleText(
+    //       middleString, maxLength, wordWrapping, maxOutputString
+    //     ), expectedFormattedMiddleStringWordWrap8);
+    //   });
     it("Input: " + '\"' + middleString + '\";' +
-      ' Max length: ' + maxLength + ';' +
-      ' Expected: ' + "hello \\nboys, \\nwazzup \\nmy \\nnigga, \\nyo" + ';',
+      ' Max length: ' + 6 + ';' +
+      ' Expected: ' + "hello \\nboys, \\nwazzup\\n my \\nnigga,\\n yo" + ';',
       function() {
         assert.equal(textFormatter.handleText(
-          middleString, maxLength, wordWrapping, maxOutputString
-        ), expectedFormattedMiddleStringWordWrap8);
+          middleString, 6, wordWrapping, maxOutputString
+        ), expectedFormattedMiddleStringWordWrap6);
       });
   });
 

@@ -9,7 +9,7 @@ var textFormatter = {
     var formattedText = [];
     var format = formatType || this._formatTypes.noWrap;
 
-    var newLineIdx, idx, subIdx, spaceIdx;
+    var newLineIdx, idx, subIdx, spaceIdx, nearestSpaceIdx;
     switch (format) {
       case this._formatTypes.charWrapping:
         newLineIdx = 0;
@@ -23,18 +23,28 @@ var textFormatter = {
       case this._formatTypes.wordWrapping:
         newLineIdx = 0;
         for (idx = 0, subIdx = 0; idx < text.length; idx++, subIdx++) {
-          if ((idx + 1) % maxLength === 0 && idx != 0) {
-            // if (text[idx] === this._wrapChars.space) {
-            //   formattedText.push(text.substring(newLineIdx, idx + 1));
-            //   newLineIdx = idx + 1;
-            // } else {
+          if (text[idx] === this._wrapChars.space && text[idx - 1]) {
+            nearestSpaceIdx = idx;
+          }
+          if ((subIdx + 1) % maxLength === 0 && subIdx != 0) {
+            if (text[idx + 1] === this._wrapChars.space) {
+              formattedText.push(text.substring(newLineIdx, idx + 1));
+              newLineIdx = idx + 1;
+              subIdx = 0;
+            } else {
+              formattedText.push(text.substring(newLineIdx, nearestSpaceIdx + 1));
+              newLineIdx = nearestSpaceIdx + 1;
+              subIdx = 0;
+              // if (text[idx + 1] === this._wrapChars.space) {
 
-            // }
-            //TODO for space
-            spaceIdx = text.indexOf(this._wrapChars.space, newLineIdx);
-            formattedText.push(text.substring(newLineIdx, spaceIdx + 1));
-            newLineIdx = spaceIdx + 1;
-            idx = spaceIdx + 1;
+              // } else {
+              //   // spaceIdx = text.indexOf(this._wrapChars.space, newLineIdx);
+              //   formattedText.push(text.substring(newLineIdx, nearestSpaceIdx + 1));
+              //   newLineIdx = nearestSpaceIdx + 1;
+              //   // idx = nearestSpaceIdx + 1;
+              //   subIdx = 0;
+              // }
+            }
           }
         }
         break;
