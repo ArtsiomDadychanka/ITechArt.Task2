@@ -18,7 +18,7 @@ describe("Array processing tool", function() {
       assert.isNull(arrayProcessingTool.getMaxSubSum2(testArray));
     });
     it("LIS returned null", function() {
-      assert.isNull(arrayProcessingTool.LIS(testArray));
+      assert.isNull(arrayProcessingTool.longestIncreasingSubsequence(testArray));
     });
   });
 
@@ -41,7 +41,7 @@ describe("Array processing tool", function() {
       assert.isNull(arrayProcessingTool.getMaxSubSum2(testArray));
     });
     it("LIS returned null", function() {
-      assert.isNull(arrayProcessingTool.LIS(testArray));
+      assert.isNull(arrayProcessingTool.longestIncreasingSubsequence(testArray));
     });
   });
 
@@ -83,6 +83,19 @@ describe("Array processing tool", function() {
     it("Is equal result two function", function() {
       assert.equal(arrayProcessingTool.getMaxSubSum(testArray), arrayProcessingTool.getMaxSubSum2(testArray));
     });
+
+  });
+
+  describe("Longest increasing subsequence", function() {
+    var arr = [1, 3, 7, 4, 6, 7, 8, 1, 2, 5, 7, 8, 90, 1];
+    var expected = [1, 2, 5, 7, 8, 90];
+    it("Source array: " +
+      "[" + arr + "]; " +
+      "Expected: " +
+      "[" + expected + "]; ",
+      function() {
+        assert.sameOrderedMembers(arrayProcessingTool.longestIncreasingSubsequence(arr), expected);
+      });
 
   });
 });

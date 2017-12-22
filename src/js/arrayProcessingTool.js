@@ -67,10 +67,29 @@ var arrayProcessingTool = {
 
     return median;
   },
-  LIS: function(array) {
+  longestIncreasingSubsequence: function(array) {
     if (!this._isValidInput(array)) {
-      return null
+      return null;
     }
+
+    var n = array.length;
+    var lis = [];
+    var temp = [];
+
+    for (var i = 0; i < n; i++) {
+      if (array[i] > array[i - 1]) {
+        temp.push(array[i]);
+      } else {
+        if (lis.length < temp.length) {
+          lis = [];
+          lis = temp.slice();
+          temp = [];
+          temp.push(array[i]);
+        }
+      }
+    }
+
+    return lis;
   },
   _search: function(array, comparer) {
     var val = array[0];
