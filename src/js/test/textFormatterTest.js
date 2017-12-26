@@ -5,6 +5,7 @@ describe("Text formatter", function() {
   var noWrap = "переносов нет";
 
   var maxLength = 8;
+  var maxSentenceLength = 15;
   var veryShortMaxLength = 2;
   var maxOutputString = 100;
 
@@ -12,10 +13,13 @@ describe("Text formatter", function() {
   var veryShortStringExpectedstring = "qw\ner\nt"
   var shortString = "hello boys"
   var middleString = "hello boys, wazzup my nigga, yo";
+  var longString = "Мама мыла раму. А рама мыла рыбу. Теперь они чистые."
   var expectedFormattedShortStringCharWrap8 = "hello bo\nys"
   var expectedFormattedMiddleStringCharWrap8 = "hello bo\nys, wazz\nup my ni\ngga, yo";
   var expectedFormattedMiddleStringWordWrap8 = "hello \nboys, \nwazzup \nmy \nnigga, \nyo";
   var expectedFormattedMiddleStringWordWrap6 = "hello \nboys, \nwazzup\n my \nnigga,\n yo";
+
+  var expectedFormattedSentence = "Мама мыла раму.\n А рама мыла рыбу. Теперь они чистые.";
 
   describe("Invalid input", function() {
     var emptyString = '';
@@ -58,14 +62,14 @@ describe("Text formatter", function() {
   });
 
   describe('Word wrapping', function() {
-    // it("Input: " + '\"' + middleString + '\";' +
-    //   ' Max length: ' + maxLength + ';' +
-    //   ' Expected: ' + "hello \\nboys, \\nwazzup \\nmy \\nnigga, \\nyo" + ';',
-    //   function() {
-    //     assert.equal(textFormatter.handleText(
-    //       middleString, maxLength, wordWrapping, maxOutputString
-    //     ), expectedFormattedMiddleStringWordWrap8);
-    //   });
+    it("Input: " + '\"' + middleString + '\";' +
+      ' Max length: ' + maxLength + ';' +
+      ' Expected: ' + "hello \\nboys, \\nwazzup \\nmy \\nnigga, \\nyo" + ';',
+      function() {
+        assert.equal(textFormatter.handleText(
+          middleString, maxLength, wordWrapping, maxOutputString
+        ), expectedFormattedMiddleStringWordWrap8);
+      });
     it("Input: " + '\"' + middleString + '\";' +
       ' Max length: ' + 6 + ';' +
       ' Expected: ' + "hello \\nboys, \\nwazzup\\n my \\nnigga,\\n yo" + ';',
@@ -74,6 +78,15 @@ describe("Text formatter", function() {
           middleString, 6, wordWrapping, maxOutputString
         ), expectedFormattedMiddleStringWordWrap6);
       });
+  });
+
+  describe('Sentence wrapping', function() {
+    // it("Input: " + '\"' + middleString + '\";' +
+    //   ' Max length: ' + maxLength + ';' +
+    //   ' Expected: ' + "hello \\nboys, \\nwazzup \\nmy \\nnigga, \\nyo" + ';',
+    //   function() {
+
+    //   });
   });
 
 });

@@ -8,8 +8,9 @@ var textFormatter = {
     }
     var formattedText = [];
     var format = formatType || this._formatTypes.noWrap;
+    var maxOutputS = maxOutputString || text.length;
 
-    var newLineIdx, idx, subIdx, spaceIdx, nearestSpaceIdx;
+    var newLineIdx, idx;
     switch (format) {
       case this._formatTypes.charWrapping:
         newLineIdx = 0;
@@ -21,32 +22,29 @@ var textFormatter = {
         }
         break;
       case this._formatTypes.wordWrapping:
-        newLineIdx = 0;
-        for (idx = 0, subIdx = 0; idx < text.length; idx++, subIdx++) {
-          if (text[idx] === this._wrapChars.space && text[idx - 1]) {
-            nearestSpaceIdx = idx;
+        var subIdx = 0,
+          newWordIdx = 0,
+          lastSpaceIdx = -1;
+        for (idx = 0, subIdx = idx + 1; text[idx]; idx++, subIdx++) {
+          if (text[idx] === ' ') {
+            lastSpaceIdx = idx;
           }
-          if ((subIdx + 1) % maxLength === 0 && subIdx != 0) {
-            if (text[idx + 1] === this._wrapChars.space) {
-              formattedText.push(text.substring(newLineIdx, idx + 1));
-              newLineIdx = idx + 1;
-              subIdx = 0;
+          if (subIdx % maxLength === 0) {
+            if (text[idx + 1] !== ' ') {
+              formattedText.push(text.substring(newWordIdx, lastSpaceIdx + 1));
+              subIdx = 1;
+              newWordIdx = lastSpaceIdx + 1;
+              idx = newWordIdx;
             } else {
-              formattedText.push(text.substring(newLineIdx, nearestSpaceIdx + 1));
-              newLineIdx = nearestSpaceIdx + 1;
-              subIdx = 0;
-              // if (text[idx + 1] === this._wrapChars.space) {
-
-              // } else {
-              //   // spaceIdx = text.indexOf(this._wrapChars.space, newLineIdx);
-              //   formattedText.push(text.substring(newLineIdx, nearestSpaceIdx + 1));
-              //   newLineIdx = nearestSpaceIdx + 1;
-              //   // idx = nearestSpaceIdx + 1;
-              //   subIdx = 0;
-              // }
+              formattedText.push(text.substring(newWordIdx, idx + 1));
+              newWordIdx = idx + 1;
+              subIdx = 1;
             }
           }
         }
+        break;
+      case this._formatTypes.sentenceWrapping:
+        formattedText.push(text);
         break;
       case this._formatTypes.noWrap:
         formattedText.push(text);
@@ -55,14 +53,10 @@ var textFormatter = {
         break;
     }
 
-
-
-
-
     format === this._formatTypes.charWrapping && formattedText.push(text.substring(newLineIdx));
-    format === this._formatTypes.wordWrapping && formattedText.push(text.substring(newLineIdx));
+    format === this._formatTypes.wordWrapping && formattedText.push(text.substring(newWordIdx));
 
-    return formattedText.join(this._formatChar);
+    return formattedText.join(this._formatChar).substring(0, maxOutputS);
   },
   _formatTypes: {
     wordWrapping: "перенос по слову",

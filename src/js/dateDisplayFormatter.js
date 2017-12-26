@@ -35,9 +35,6 @@ var dateDisplayFormatter = {
     yearDiff = nowYear - oldYear;
     monthDiff = nowMonth - oldMonth;
     dayDiff = (+nowDay - +oldDay) < 0 ? 0 : (+nowDay - +oldDay);
-    console.log(dayDiff);
-    console.log(nowDay);
-    console.log(oldDay);
 
     yearDiff = hasFullYear(nowYear, oldYear,
         nowMonth, oldMonth,
