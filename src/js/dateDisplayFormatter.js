@@ -1,4 +1,63 @@
 var dateDisplayFormatter = {
+  formatDateWithConvertion: function(date, inRegEx) {
+    var outRegEx = 'YYYY MM DD';
+    this._lastCalculatedDate = this.formatDate(date, inRegEx, outRegEx);
+    return this;
+  },
+  fromNow: function() {
+    var hasFullYear = function(nowYear, oldYear,
+      nowMonth, oldMonth,
+      nowDay, oldDay) {
+      return (nowYear - oldYear) >= 0 &&
+        (nowMonth - oldMonth) >= 0
+    }
+    var hasFullMonth = function(nowMonth, oldMonth,
+      nowDay, oldDay) {
+      return (nowMonth - oldMonth) >= 0 &&
+        (nowDay - oldDay) >= 0
+    }
+
+    var lastDate = this._lastCalculatedDate;
+    var dateComponents = lastDate.split(" ");
+    var oldYear = dateComponents[0],
+      oldMonth = dateComponents[1],
+      oldDay = dateComponents[2];
+
+    var now = new Date();
+    var nowDay = now.getDate(),
+      nowMonth = now.getMonth() + 1,
+      nowYear = now.getFullYear();
+
+    var yearDiff = 0,
+      monthDiff = 0,
+      dayDiff = 0;
+
+    yearDiff = nowYear - oldYear;
+    monthDiff = nowMonth - oldMonth;
+    dayDiff = (+nowDay - +oldDay) < 0 ? 0 : (+nowDay - +oldDay);
+    console.log(dayDiff);
+    console.log(nowDay);
+    console.log(oldDay);
+
+    yearDiff = hasFullYear(nowYear, oldYear,
+        nowMonth, oldMonth,
+        nowDay, oldDay) ?
+      yearDiff :
+      yearDiff - 1;
+
+    monthDiff = hasFullMonth(nowMonth, oldMonth,
+        nowDay, oldDay) ?
+      monthDiff :
+      monthDiff - 1;
+
+    if (yearDiff >= 1) {
+      return (yearDiff + ' year ago');
+    } else if (monthDiff >= 1) {
+      return (monthDiff + ' month ago');
+    }
+
+    return (dayDiff + ' days ago')
+  },
   getShortDate: function(date) {
     if (!this._isValidShortDate(date)) {
       return null;
@@ -44,9 +103,6 @@ var dateDisplayFormatter = {
     );
 
     return resultDate;
-  },
-  fromNow: function() {
-
   },
   _isValidIntDay: function(day) {
     return +day > 0 && +day <= 31;
@@ -126,6 +182,7 @@ var dateDisplayFormatter = {
       }
     }
   },
+  _lastCalculatedDate: "",
   _shortDateMaxLength: 8,
   _separators: {
     _shortDateSeparator: '-',
