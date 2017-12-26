@@ -4,6 +4,7 @@ var cachingCalculator = {
     var result;
     if (!this.cache.isCached(a, b, op)) {
       result = a + b;
+      console.log("It's value calculating: " + result);
       this.cache.add(a, b, op, result);
       return result;
     }
@@ -15,6 +16,7 @@ var cachingCalculator = {
     var result;
     if (!this.cache.isCached(a, b, op)) {
       result = a - b;
+      console.log("It's value calculating: " + result);
       this.cache.add(a, b, op, result);
       return result;
     }
@@ -26,6 +28,7 @@ var cachingCalculator = {
     var result;
     if (!this.cache.isCached(a, b, op)) {
       result = a * b;
+      console.log("It's value calculating: " + result);
       this.cache.add(a, b, op, result);
       return result;
     }
@@ -37,6 +40,7 @@ var cachingCalculator = {
     var result;
     if (!this.cache.isCached(a, b, op)) {
       result = a / b;
+      console.log("It's value calculating: " + result);
       this.cache.add(a, b, op, result);
       return result;
     }
@@ -76,15 +80,19 @@ var cachingCalculator = {
       }
     },
     getResult: function(a, b, operation) {
-      var idx = this._cachedExpressions.findIndex(function(element) {
-        return a === element.a &&
-          b === element.b &&
-          operation === element.operation;
-      });
+      var idx = -1;
+      for (var i = 0; i < this._cachedExpressions.length; i++) {
+        if (this._cachedExpressions[i].a === a &&
+          this._cachedExpressions[i].b === b &&
+          this._cachedExpressions[i].operation === operation) {
+          idx = i;
+        }
+      }
+      console.log("It's value taking from cache: " + this._cachedExpressions[idx].result);
       if (idx === -1) {
         return null;
       }
-      console.log("get result from cache: " + this._cachedExpressions[idx].result);
+
       return this._cachedExpressions[idx].result;
     },
     clear: function() {
@@ -94,17 +102,23 @@ var cachingCalculator = {
       return this._cachedExpressions.length === this._maxCacheSize;
     },
     isCached: function(a, b, operation) {
-      var idx = this._cachedExpressions.findIndex(function(element) {
-        return a === element.a &&
-          b === element.b &&
-          operation === element.operation;
-      });
+      var idx = -1;
+      for (var i = 0; i < this._cachedExpressions.length; i++) {
+        if (this._cachedExpressions[i].a === a &&
+          this._cachedExpressions[i].b === b &&
+          this._cachedExpressions[i].operation === operation) {
+          idx = i;
+        }
+      }
       return idx !== -1;
     },
     isDefinedOperation: function(op) {
-      this._cachedOperations.find(function(op) {
-        return op === operation;
-      });
+      for (var i = 0; i < this._cachedOperations.length; i++) {
+        if (this._cachedOperations[i] === op) {
+          return true;
+        }
+      }
+      return false;
     }
   }
 }
