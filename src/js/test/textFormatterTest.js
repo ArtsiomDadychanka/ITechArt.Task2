@@ -19,7 +19,7 @@ describe("Text formatter", function() {
   var expectedFormattedMiddleStringWordWrap8 = "hello \nboys, \nwazzup \nmy \nnigga, \nyo";
   var expectedFormattedMiddleStringWordWrap6 = "hello \nboys, \nwazzup\n my \nnigga,\n yo";
 
-  var expectedFormattedSentence = "Мама мыла раму.\n А рама мыла рыбу. Теперь они чистые.";
+  var expectedFormattedSentence = "Мама мыла раму\n А рама мыла ры\n Теперь они чис\n";
 
   describe("Invalid input", function() {
     var emptyString = '';
@@ -81,12 +81,14 @@ describe("Text formatter", function() {
   });
 
   describe('Sentence wrapping', function() {
-    // it("Input: " + '\"' + middleString + '\";' +
-    //   ' Max length: ' + maxLength + ';' +
-    //   ' Expected: ' + "hello \\nboys, \\nwazzup \\nmy \\nnigga, \\nyo" + ';',
-    //   function() {
-
-    //   });
+    it("Input: " + '\"' + longString + '\";' +
+      ' Max length: ' + maxSentenceLength + ';' +
+      ' Expected: ' + 'Мама мыла раму\\n А рама мыла ры\\n Теперь они чис\\n' + ';',
+      function() {
+        assert.equal(textFormatter.handleText(
+          longString, maxSentenceLength, sentenceWrapping
+        ), expectedFormattedSentence);
+      });
   });
 
 });

@@ -44,7 +44,14 @@ var textFormatter = {
         }
         break;
       case this._formatTypes.sentenceWrapping:
-        formattedText.push(text);
+        var sentences = text.split('.');
+        sentences.forEach(function(element, index, array) {
+          if (element.length > maxLength) {
+            formattedText.push(element.slice(0, maxLength));
+          } else {
+            formattedText.push(element);
+          }
+        });
         break;
       case this._formatTypes.noWrap:
         formattedText.push(text);
