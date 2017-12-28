@@ -1,11 +1,7 @@
 var arraySorter = {
   bubbleSort: function(array, order) {
     var sortedArray = array.slice(0);
-    var sortOrder = !order ?
-      sortOrder = this._sortOrder.descending :
-      order === this._sortOrder.ascending.type ?
-      this._sortOrder.ascending :
-      this._sortOrder.descending;
+    var sortOrder = this._getOrder(order);
 
     var temp = null;
 
@@ -23,19 +19,15 @@ var arraySorter = {
   },
   selectSort: function(array, order) {
     var sortedArray = array.slice(0);
-    var sortOrder = !order ?
-      sortOrder = this._sortOrder.descending :
-      order === this._sortOrder.ascending.type ?
-      this._sortOrder.ascending :
-      this._sortOrder.descending;
+    var sortOrder = this._getOrder(order);
 
-    var temp = null;
-    let k = null,
-      n = array.length;
+    var n = array.length;
     for (var i = 0; i < n - 1; i++) {
       var min = i;
       for (var j = i + 1; j < n; j++) {
-        if (sortOrder.comparer(sortedArray[min], sortedArray[j])) min = j;
+        if (sortOrder.comparer(sortedArray[min], sortedArray[j])) {
+          min = j;
+        }
       }
       var t = sortedArray[min];
       sortedArray[min] = sortedArray[i];
@@ -46,11 +38,7 @@ var arraySorter = {
   },
   insertionSort: function(array, order) {
     var sortedArray = array.slice(0);
-    var sortOrder = !order ?
-      sortOrder = this._sortOrder.ascending :
-      order === this._sortOrder.ascending.type ?
-      this._sortOrder.ascending :
-      this._sortOrder.descending;
+    var sortOrder = this._getOrder(order);
 
     var n = sortedArray.length;
     for (var i = 0; i < n; i++) {
@@ -66,25 +54,11 @@ var arraySorter = {
     return sortedArray;
   },
   defaultSort: function(array, order) {
-    var sortOrder = !order ?
-      sortOrder = this._sortOrder.ascending :
-      order === this._sortOrder.ascending.type ?
-      this._sortOrder.ascending :
-      this._sortOrder.descending;
-
     var sortedArray = array.sort(function(a, b) {
-      if (a < b) {
-        return -1;
-      }
-      if (a > b) {
-        return 1;
-      }
-      return 0;
+      return a - b;
     });
 
-    return !order ?
-      sortedArray :
-      order === this._sortOrder.descending.type ?
+    return order === this._sortOrder.descending.type ?
       sortedArray.reverse() :
       sortedArray;
   },
@@ -101,5 +75,10 @@ var arraySorter = {
         return a > b;
       }
     }
+  },
+  _getOrder: function(order) {
+    return order === this._sortOrder.ascending.type ?
+      this._sortOrder.ascending :
+      this._sortOrder.descending;
   }
 }
