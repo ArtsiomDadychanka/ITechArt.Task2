@@ -10,48 +10,15 @@ var textFormatter = {
     var format = formatType || this._formatTypes.noWrap;
     var maxOutputS = maxOutputString || text.length;
 
-    var newLineIdx, idx;
     switch (format) {
       case this._formatTypes.charWrapping:
-        newLineIdx = 0;
-        for (idx = 0; idx < text.length; idx++) {
-          if ((idx + 1) % maxLength === 0 && idx != 0) {
-            formattedText.push(text.substring(newLineIdx, idx + 1));
-            newLineIdx = idx + 1;
-          }
-        }
+        formattedText = this._charWrap(text, maxLength);
         break;
       case this._formatTypes.wordWrapping:
-        var subIdx = 0,
-          newWordIdx = 0,
-          lastSpaceIdx = -1;
-        for (idx = 0, subIdx = idx + 1; text[idx]; idx++, subIdx++) {
-          if (text[idx] === ' ') {
-            lastSpaceIdx = idx;
-          }
-          if (subIdx % maxLength === 0) {
-            if (text[idx + 1] !== ' ') {
-              formattedText.push(text.substring(newWordIdx, lastSpaceIdx + 1));
-              subIdx = 1;
-              newWordIdx = lastSpaceIdx + 1;
-              idx = newWordIdx;
-            } else {
-              formattedText.push(text.substring(newWordIdx, idx + 1));
-              newWordIdx = idx + 1;
-              subIdx = 1;
-            }
-          }
-        }
+        formattedText = this._wordWrap(text, maxLength);
         break;
       case this._formatTypes.sentenceWrapping:
-        var sentences = text.split('.');
-        sentences.forEach(function(element, index, array) {
-          if (element.length > maxLength) {
-            formattedText.push(element.slice(0, maxLength));
-          } else {
-            formattedText.push(element);
-          }
-        });
+        formattedText = this._sentenceWrap(text, maxLength);
         break;
       case this._formatTypes.noWrap:
         formattedText.push(text);
@@ -59,9 +26,6 @@ var textFormatter = {
       default:
         break;
     }
-
-    format === this._formatTypes.charWrapping && formattedText.push(text.substring(newLineIdx));
-    format === this._formatTypes.wordWrapping && formattedText.push(text.substring(newWordIdx));
 
     return formattedText.join(this._formatChar).substring(0, maxOutputS);
   },
@@ -75,5 +39,63 @@ var textFormatter = {
     space: ' ',
     dot: '.'
   },
-  _formatChar: "\n"
-}
+  _formatChar: "\n",
+  _charWrap: function(text, maxLength) {
+    var formattedText = [];
+    var newLineIdx, idx;
+
+    newLineIdx = 0;
+    for (idx = 0; idx < text.length; idx++) {
+      if ((idx + 1) % maxLength === 0 && idx != 0) {
+        formattedText.push(text.substring(newLineIdx, idx + 1));
+        newLineIdx = idx + 1;
+      }
+    }
+    formattedText.push(text.substring(newLineIdx));
+
+    return formattedText;
+  },
+  _wordWrap: function(text, maxLength) {
+    var formattedText = [];
+    var newLineIdx,
+      idx,
+      subIdx = 0,
+      newWordIdx = 0,
+      lastSpaceIdx = -1;
+
+    for (idx = 0, subIdx = idx + 1; text[idx]; idx++, subIdx++) {
+      if (text[idx] === ' ') {
+        lastSpaceIdx = idx;
+      }
+      if (subIdx % maxLength === 0) {
+        if (text[idx + 1] !== ' ') {
+          formattedText.push(text.substring(newWordIdx, lastSpaceIdx + 1));
+          subIdx = 1;
+          newWordIdx = lastSpaceIdx + 1;
+          idx = newWordIdx;
+        } else {
+          formattedText.push(text.substring(newWordIdx, idx + 1));
+          newWordIdx = idx + 1;
+          subIdx = 1;
+        }
+      }
+    }
+
+    formattedText.push(text.substring(newWordIdx));
+
+    return formattedText;
+  },
+  _sentenceWrap: function(text, maxLength) {
+    var formattedText = [];
+    var sentences = text.split('.');
+    sentences.forEach(function(element, index, array) {
+      if (element.length > maxLength) {
+        formattedText.push(element.slice(0, maxLength));
+      } else {
+        formattedText.push(element);
+      }
+    });
+
+    return formattedText;
+  }
+};
