@@ -23,11 +23,11 @@ var binaryConverter = {
 
     var base = 2;
     var decimal = 0;
+    var currentValue = null;
     for (var i = 0; i < vector.length; i++) {
-      if (+vector[i] == 1) {
-        decimal += Math.pow(2, i);
-      } else if (+vector[i] == 0) {
-        decimal += 0;
+      currentValue = +vector[i];
+      if (currentValue === 1 || currentValue === 0) {
+        decimal += currentValue * Math.pow(2, i);
       } else {
         return null;
       }
