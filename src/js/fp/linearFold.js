@@ -4,4 +4,6 @@ function lf(array, callback, initialValue) {
   for (var i = 0; i < array.length; i++) {
     lastResult = callback(lastResult, array[i], i, array);
   }
+
+  return lastResult;
 }

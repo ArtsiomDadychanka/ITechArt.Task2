@@ -1,15 +1,21 @@
 function lu(cb, initValue) {
+  debugger;
   var result = [];
-  var flag = true;
 
+  var tuple = cb(initValue);
+  var resultValue = tuple[0];
+  var nextState = tuple[1];
 
-  var element;
-  while (flag) {
-    var element = cb(value);
-    element === null ?
-      flag = !flag :
-      result.push(element);
+  while (true) {
+    result.push(resultValue);
+
+    tuple = cb(nextState);
+    if (tuple === null) {
+      break;
+    }
+    resultValue = tuple[0];
+    nextState = tuple[1];
   }
 
   return result;
-}
+};
