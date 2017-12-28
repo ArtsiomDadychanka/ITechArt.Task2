@@ -24,6 +24,7 @@ describe("Array processing tool", function() {
 
   describe("Empty array", function() {
     var testArray = [];
+    var expectedSubSum = 0;
 
     it("searchMin returned null", function() {
       assert.isNull(arrayProcessingTool.searchMin(testArray));
@@ -35,10 +36,10 @@ describe("Array processing tool", function() {
       assert.isNull(arrayProcessingTool.searchMedian(testArray));
     });
     it("getMaxSubSum returned null", function() {
-      assert.isNull(arrayProcessingTool.getMaxSubSum(testArray));
+      assert.equal(arrayProcessingTool.getMaxSubSum(testArray), expectedSubSum);
     });
     it("getMaxSubSum2 returned null", function() {
-      assert.isNull(arrayProcessingTool.getMaxSubSum2(testArray));
+      assert.equal(arrayProcessingTool.getMaxSubSum2(testArray), expectedSubSum);
     });
     it("LIS returned null", function() {
       assert.isNull(arrayProcessingTool.longestIncreasingSubsequence(testArray));
