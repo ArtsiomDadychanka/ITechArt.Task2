@@ -1,5 +1,6 @@
 describe("FP tests", function() {
 
+
   describe("Partial application", function() {
     var sumOf2 = function(a, b) {
       return a + b;
@@ -62,17 +63,136 @@ describe("FP tests", function() {
     console.log("LF END");
   });
 
-  describe("Linear unfold", function() {
-    var expected;
-    var init;
-    console.log("LU START");
-    console.log();
-    var cb = function() {
+  describe("Map", function() {
+    var source = [1, 2, 3, 4, 5, 6];
+    var expected = [2, 4, 6, 8, 10, 12];
+    var double = function(num) {
+      return num * 2;
+    }
 
-    };
-    lu(cb, init);
-    console.log("LU END");
+    it('Source: ' +
+      '[' + source + '] ' +
+      'after map, that multiply by 2; ' +
+      'Expected: ' +
+      '[' + expected + '] ',
+      function() {
+        assert.sameOrderedMembers(map(source, double), expected);
+      });
+
   });
 
-  describe
+  describe("Filter", function() {
+    var source = [1, 2, 3, 4, 7, 7, 5, 6];
+    var expected = [2, 4, 6];
+    var even = function(num) {
+      return num % 2 === 0;
+    }
+
+    it('Source: ' +
+      '[' + source + '] ' +
+      'after filter, that keep even numbers; ' +
+      'Expected: ' +
+      '[' + expected + '] ',
+      function() {
+        assert.sameOrderedMembers(filter(source, even), expected);
+      });
+
+  });
+
+  describe("Linear unfold", function() {
+    var expected = [2, 4, 8, 16];
+    var init = 1;
+
+    var cb = function(state) {
+      if (state >= 5) {
+        return null;
+      }
+      var result = Math.pow(2, state);
+
+      return [result, state + 1];
+    };
+
+    it('Init:1 ' +
+      'after unfold, that raise to a power 2; ' +
+      'Expected: ' +
+      '[' + expected + '] ',
+      function() {
+        assert.sameOrderedMembers(lu(cb, init), expected);
+      });
+  });
+
+  describe("Average of even numbers", function() {
+    var source = [1, 23, 2, 6, 12, 0];
+    var expected = 5;
+    var even = function(num) {
+      return num % 2 === 0;
+    }
+    var quarter = function(lastResult, element) {
+      return lastResult + (element / 4);
+    }
+
+    it('Source: ' +
+      '[' + source + '] ' +
+      'after filter and mapping; ' +
+      'Expected: ' +
+      '[' + expected + '] ',
+      function() {
+        var filteredArr = filter(source, even);
+
+        assert.equal(lf(filteredArr, quarter, 0), expected);
+      });
+  });
+
+  describe("Sum of random numbers", function() {
+    var init = 1;
+    var rand = function(state) {
+      var min = 0,
+        max = 10;
+      if (state >= 10) {
+        return null;
+      }
+      var result = Math.floor(Math.random() * (max - min + 1)) + min;
+
+      return [result, state + 1];
+    }
+    var sum = function(lastResult, element) {
+      return lastResult + element;
+    }
+    var add = function(a, b) {
+      return a + b;
+    }
+    var randoms = lu(rand, 0);
+    var expected = randoms.reduce(add);
+
+    it('Source: ' +
+      '[' + randoms + '] ' +
+      'after filter and mapping; ' +
+      'Expected: ' +
+      '[' + expected + '] ',
+      function() {
+        assert.equal(lf(randoms, sum), expected);
+      });
+
+  });
+
+  describe("First", function() {
+    var source = [1, 3, 12, 0, 14];
+    var moreThan5 = function(num) {
+      return num > 5;
+    }
+    var expected = 12;
+
+    it('Source: ' +
+      '[' + source + '] ' +
+      'get num more than 5; ' +
+      'Expected: ' + expected,
+      function() {
+        assert.equal(first(source, moreThan5), expected);
+      });
+
+  });
+
+  describe("Memoization", function() {
+
+  });
 });
