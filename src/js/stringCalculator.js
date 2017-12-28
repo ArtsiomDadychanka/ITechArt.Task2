@@ -23,7 +23,7 @@ var stringCalculator = {
     }
     return +a - +b;
   },
-  _isNumeric(sNum) {
+  _isNumeric: function(sNum) {
     return !isNaN(+sNum) && isFinite(sNum);
   }
 };
