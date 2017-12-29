@@ -5,5 +5,5 @@ function f(params, func) {
 
   return function(params) {
     return args[idxG].apply(null, argsWithoutFunc.concat(params));
-  }
+  };
 }

@@ -1,5 +1,4 @@
 function lu(cb, initValue) {
-  debugger;
   var result = [];
 
   var tuple = cb(initValue);
@@ -18,4 +17,4 @@ function lu(cb, initValue) {
   }
 
   return result;
-};
+}

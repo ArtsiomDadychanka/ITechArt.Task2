@@ -18,7 +18,7 @@ var binaryConverter = {
   },
   toDecimal: function(vector) {
     if (this._isEmptyOrNullArray(vector)) {
-      return null
+      return null;
     }
 
     var base = 2;

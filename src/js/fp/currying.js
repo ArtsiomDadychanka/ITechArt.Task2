@@ -14,4 +14,4 @@ function curry(func) {
       return next.apply(null, localArgs);
     };
   }());
-};
+}

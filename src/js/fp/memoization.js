@@ -12,5 +12,5 @@ function memoization(fn) {
     cache[args] = result;
 
     return result;
-  }
+  };
 }

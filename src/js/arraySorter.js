@@ -81,4 +81,4 @@ var arraySorter = {
       this._sortOrder.ascending :
       this._sortOrder.descending;
   }
-}
+};

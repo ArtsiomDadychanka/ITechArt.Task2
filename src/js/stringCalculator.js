@@ -3,7 +3,7 @@ var stringCalculator = {
     if (!this._isNumeric(a) || !this._isNumeric(b)) {
       return null;
     }
-    return +a + +b;
+    return +a + (+b);
   },
   mult: function(a, b) {
     if (!this._isNumeric(a) || !this._isNumeric(b)) {
