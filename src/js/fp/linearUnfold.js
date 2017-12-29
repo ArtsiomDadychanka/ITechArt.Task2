@@ -1,4 +1,7 @@
 function lu(cb, initValue) {
+  if (!cb) {
+    return null;
+  }
   var result = [];
 
   var tuple = cb(initValue);

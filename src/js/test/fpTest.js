@@ -192,7 +192,23 @@ describe("FP tests", function() {
 
   });
 
-  describe("Memoization", function() {
-
+  describe("Memoization and lazy", function() {
+    console.log("lazy start");
+    var add = function(a, b) {
+      return a + b;
+    };
+    var lazySum = lazy(add, 1, 2);
+    lazySum();
+    lazySum();
+    console.log("lazy end");
+    console.log("");
+    console.log("Memoization start");
+    var cachedSummation = memoization(add);
+    var result = cachedSummation(1, 3);
+    result = cachedSummation(1, 3);
+    result = cachedSummation(1, 4);
+    result = cachedSummation(1, 4);
+    console.log("Memoization end");
+    console.log("");
   });
 });

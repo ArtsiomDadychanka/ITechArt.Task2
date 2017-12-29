@@ -1,4 +1,8 @@
 function curry(func) {
+  if (!func) {
+    return null;
+  }
+
   var arity = func.length;
 
   return (function resolver() {
