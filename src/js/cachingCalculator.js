@@ -54,63 +54,43 @@ var cachingCalculator = {
     div: '/',
   },
   cache: {
-    _cachedExpressions: [],
+    _cache2: {},
     _cachedOperations: [],
     _maxCacheSize: 100,
+    _cacheLength: 0,
     setMaxCacheSize: function(size) {
-      if (+size < 0) {
-        throw new Error("Invalid size");
-      }
       this._maxCacheSize = size;
     },
     defineCachedOperation: function(operation) {
       this._cachedOperations.push(operation);
+      this._cache2[operation] = {};
     },
     add: function(a, b, operation, result) {
       if (this.isFull()) {
-        throw new Error("Cache is full");
+        return;
       }
       if (this.isDefinedOperation(operation)) {
-        this._cachedExpressions.push({
-          a: a,
-          b: b,
-          operation: operation,
-          result: result
-        });
+        this._cache2[operation][a.toString() + b] = result;
+        this._cacheLength++;
       }
     },
     getResult: function(a, b, operation) {
-      var idx = -1;
-      for (var i = 0; i < this._cachedExpressions.length; i++) {
-        if (this._cachedExpressions[i].a === a &&
-          this._cachedExpressions[i].b === b &&
-          this._cachedExpressions[i].operation === operation) {
-          idx = i;
-        }
-      }
-      console.log("It's value taking from cache: " + this._cachedExpressions[idx].result);
-      if (idx === -1) {
-        return null;
-      }
-
-      return this._cachedExpressions[idx].result;
+      var result = this._cache2[operation][a.toString() + b];
+      console.log("It's value taking from cache: " + result);
+      return typeof result === typeof undefined ? null : result;
     },
     clear: function() {
-      this._cachedExpressions = [];
+      this._cache2 = {};
     },
     isFull: function() {
-      return this._cachedExpressions.length === this._maxCacheSize;
+      return this._cacheLength >= this._maxCacheSize;
     },
     isCached: function(a, b, operation) {
-      var idx = -1;
-      for (var i = 0; i < this._cachedExpressions.length; i++) {
-        if (this._cachedExpressions[i].a === a &&
-          this._cachedExpressions[i].b === b &&
-          this._cachedExpressions[i].operation === operation) {
-          idx = i;
-        }
-      }
-      return idx !== -1;
+      var cacheOfOperation = this._cache2[operation];
+      var result = typeof cacheOfOperation === typeof undefined ?
+        undefined :
+        cacheOfOperation[a.toString() + b];
+      return typeof result === typeof undefined ? false : true;
     },
     isDefinedOperation: function(op) {
       for (var i = 0; i < this._cachedOperations.length; i++) {
@@ -118,7 +98,8 @@ var cachingCalculator = {
           return true;
         }
       }
+
       return false;
     }
   }
-}
+};
