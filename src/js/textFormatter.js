@@ -27,7 +27,9 @@ var textFormatter = {
         break;
     }
 
-    return formattedText.join(this._formatChar).substring(0, maxOutputS);
+    return format === this._formatTypes.sentenceWrapping ?
+      formattedText.join(this._formatChar + this._wrapChars.space).substring(0, maxOutputS) + this._formatChar :
+      formattedText.join(this._formatChar).substring(0, maxOutputS);
   },
   _formatTypes: {
     wordWrapping: "перенос по слову",
@@ -57,8 +59,7 @@ var textFormatter = {
   },
   _wordWrap: function(text, maxLength) {
     var formattedText = [];
-    var newLineIdx,
-      idx,
+    var idx,
       subIdx = 0,
       newWordIdx = 0,
       lastSpaceIdx = -1;
@@ -87,10 +88,10 @@ var textFormatter = {
   },
   _sentenceWrap: function(text, maxLength) {
     var formattedText = [];
-    var sentences = text.split('.');
+    var sentences = text.split('. ');
     sentences.forEach(function(element, index, array) {
       if (element.length > maxLength) {
-        formattedText.push(element.slice(0, maxLength));
+        formattedText.push(element.slice(0, maxLength - 1));
       } else {
         formattedText.push(element);
       }
