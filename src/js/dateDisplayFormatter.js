@@ -9,13 +9,13 @@ var dateDisplayFormatter = {
       nowMonth, oldMonth,
       nowDay, oldDay) {
       return (nowYear - oldYear) >= 0 &&
-        (nowMonth - oldMonth) >= 0
-    }
+        (nowMonth - oldMonth) >= 0;
+    };
     var hasFullMonth = function(nowMonth, oldMonth,
       nowDay, oldDay) {
       return (nowMonth - oldMonth) >= 0 &&
-        (nowDay - oldDay) >= 0
-    }
+        (nowDay - oldDay) >= 0;
+    };
 
     var lastDate = this._lastCalculatedDate;
     var dateComponents = lastDate.split(" ");
@@ -53,7 +53,7 @@ var dateDisplayFormatter = {
       return (monthDiff + ' month ago');
     }
 
-    return (dayDiff + ' days ago')
+    return (dayDiff + ' days ago');
   },
   getShortDate: function(date) {
     if (!this._isValidShortDate(date)) {
@@ -101,46 +101,23 @@ var dateDisplayFormatter = {
 
     return resultDate;
   },
-  _isValidIntDay: function(day) {
-    return +day > 0 && +day <= 31;
-  },
-  _isValidIntMonth: function(month) {
-    return +month > 0 && +month <= 12;
-  },
-  _isValidStringMonth: function(month) {
-    return Object.keys(this._months).find(month.toLowerCase());
-  },
-  _isValidIntYear: function(year) {
-    return +year >= 0 && +year <= 9999;
+  _isValidDate: function(year, month, day) {
+    var error = "Invalid Date";
+
+    return new Date(year, month, day) !== error;
   },
   _isValidShortDate: function(shortDate) {
     if (!this._isValidShortDateLength(shortDate)) {
       return false;
     }
-
     var date = this._getShortDateComponents(shortDate);
 
-    return this._isValidIntDay(date[0]) &&
-      this._isValidIntMonth(date[1]) &&
-      this._isValidIntYear(date[2]) &&
-      this._isValidDayOfMonth(date[1], date[2]);
+    return this._isValidDate(date[2], date[1], date[0]);
   },
   _isValidLongDate: function(longDate) {
     var date = this._getLongDateComponents(longDate);
 
-    return this._isValidIntDay(date[0]) &&
-      this._isValidStringMonth(date[1]) &&
-      this._isValidIntYear(date[2]) &&
-      this._isValidDayOfMonth(date[1], date[2]);
-  },
-  _isValidDayOfMonth: function(month, day) {
-    if (+month) {
-      return +month == this._months.February && +day > 29 ? false : true;
-    }
-    return month === this._months.February &&
-      +day > 29 ?
-      false :
-      true;
+    return this._isValidDate(date[2], date[1], date[0]);
   },
   _isValidShortDateLength: function(shortDate) {
     return shortDate.length === this._shortDateMaxLength;
@@ -150,7 +127,7 @@ var dateDisplayFormatter = {
       date[0] + date[1],
       date[2] + date[3],
       date[4] + date[5] + date[6] + date[7]
-    ]
+    ];
   },
   _getLongDateComponents: function(date) {
     var spaceBeforeMonth = date.indexOf(this._longDateSeparator);
@@ -173,11 +150,7 @@ var dateDisplayFormatter = {
     return str.length === 1 && str.match(/[a-z]/i);
   },
   _fromIntToStingMonth: function(intMonth) {
-    for (var month in this._months) {
-      if (this._months[month] == intMonth) {
-        return month;
-      }
-    }
+    return this._month[intMonth - 1];
   },
   _lastCalculatedDate: "",
   _shortDateMaxLength: 8,
@@ -185,20 +158,20 @@ var dateDisplayFormatter = {
     _shortDateSeparator: '-',
     _longDateSeparator: ' '
   },
-  _months: {
-    january: 01,
-    february: 02,
-    march: 03,
-    april: 04,
-    may: 05,
-    june: 06,
-    july: 07,
-    august: 08,
-    september: 09,
-    october: 10,
-    november: 11,
-    december: 12
-  },
+  _month: [
+    'january',
+    'february',
+    'march',
+    'april',
+    'may',
+    'june',
+    'july',
+    'august',
+    'september',
+    'october',
+    'november',
+    'december'
+  ],
   _monthType: {
     string: 'string',
     num: 'int'
@@ -209,4 +182,4 @@ var dateDisplayFormatter = {
     month: 'MM',
     year: 'YYYY'
   }
-}
+};
